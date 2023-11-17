@@ -1,5 +1,5 @@
 extern int but, pot;
-extern float angle, ajuste, atraso, temp, targettemp;
+extern float angle, ajuste, atraso, temp, targettemp, vm, vefc, pl, vp, pt1, pt2;
 
 void serialmonitor(void *parameter);
 
@@ -21,6 +21,17 @@ void serialmonitor(void *parameter){
     Serial.println(temp);
     Serial.print("target = ");
     Serial.println(targettemp);
+    Serial.print("Vef = ");
+    Serial.println(vefc);
+    Serial.print("Pl = ");
+    Serial.println(pl);
+    Serial.print("vp = ");
+    Serial.println(vp);
+    Serial.print("Pt1 = ");
+    Serial.println(pt1);
+    Serial.print("Pt2 = ");
+    Serial.println(pt2);
+
 
     vTaskDelay(pdMS_TO_TICKS(2000));
   }

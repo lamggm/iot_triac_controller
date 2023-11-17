@@ -1,17 +1,31 @@
 extern int but, pot;
-extern float angle, ajuste, atraso, temp, targettemp;
+extern float angle, ajuste, atraso, temp, targettemp, vm, vefc, pl;
 
 void handleMessage(AdafruitIO_Data *data);
 void condad();
 void ioloop(void *parameter);
 void sendtemp(void *parameter);
+void senddata(void *parameter);
 
 void sendtemp(void *parameter){
   Serial.println("Envio de temperatura iniciado.");
     while (1) {
     
     tempfeed->save(temp);
-    vTaskDelay(pdMS_TO_TICKS(60000));
+
+    vTaskDelay(pdMS_TO_TICKS(30000));
+  }
+}
+
+void senddata(void *parameter){
+  Serial.println("Envio de data iniciado.");
+    while (1) {
+    
+    anglefeed->save(angle);
+    vefcfeed->save(vefc);
+    plfeed->save(pl);
+
+    vTaskDelay(pdMS_TO_TICKS(15000));
   }
 }
 

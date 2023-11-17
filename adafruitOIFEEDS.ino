@@ -10,6 +10,12 @@ int pot = 0;
 float temp = 0.0;
 float targettemp = 33.0;
 
+double npi = 3.14159265358979323846;
+int res = 1210;
+float vm = 0.0;
+float vefc = 0.0;
+float pl = 0.0;
+
 float atraso = 400;
 float angle = 90.0;
 float ajuste = 0.0;
@@ -25,6 +31,7 @@ extern void handleMessage(AdafruitIO_Data *data);
 extern void condad();
 extern void ioloop(void *parameter);
 extern void sendtemp(void *parameter);
+extern void senddata(void *parameter);
 
 extern void serialmonitor(void *parameter);
 
@@ -33,12 +40,16 @@ void IntzeroCrossing();
 TaskHandle_t Mode;
 TaskHandle_t IOloop;
 TaskHandle_t sendTemp;
+TaskHandle_t sendData;
 TaskHandle_t serialMonitor;
 
 AdafruitIO_Feed *butfeed = io.feed("onoff");
 AdafruitIO_Feed *potfeed = io.feed("dimmer");
 AdafruitIO_Feed *tempfeed = io.feed("temperature");
 AdafruitIO_Feed *targettempfeed = io.feed("settemp");
+AdafruitIO_Feed *vefcfeed = io.feed("tefc");
+AdafruitIO_Feed *plfeed = io.feed("pcarg");
+AdafruitIO_Feed *anglefeed = io.feed("angle");
 
 
 void setup() {
@@ -57,6 +68,8 @@ void setup() {
   xTaskCreatePinnedToCore(ioloop, "IOloop", 10000, NULL, 3, &IOloop, 0);
   delay(500);
   xTaskCreatePinnedToCore(sendtemp, "sendTemp", 10000, NULL, 1, &sendTemp, 0);
+  delay(500);
+  xTaskCreatePinnedToCore(senddata, "sendData", 10000, NULL, 1, &sendData, 0);
   delay(500);
   xTaskCreatePinnedToCore(serialmonitor, "serialMonitor", 10000, NULL, 1, &serialMonitor, 0);
   delay(500);

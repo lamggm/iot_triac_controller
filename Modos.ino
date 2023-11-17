@@ -12,13 +12,16 @@ double
   Rinf = 0.0,
   tempK = 0.0;
 
-extern int but, pot;
-extern float angle, ajuste, atraso, temp, targettemp;
+extern int but, pot, res;
+extern float angle, ajuste, atraso, temp, targettemp, vefc, pl;
+extern double npi;
 extern volatile int trigtime;
+float vp, pt1, pt2;
 
 void mode(void *parameter);
 void controlarTemperatura();
 void lerTemperatura();
+void calcs();
 
 void mode(void *parameter) {
   Serial.print("Modo iniciado: ");
@@ -31,6 +34,7 @@ void mode(void *parameter) {
   Rinf = Rd0 * exp(-beta / T_0);
 
   while (1) {
+    calcs();
     if (but == 1) {
       lerTemperatura();
       controlarTemperatura();
@@ -73,4 +77,14 @@ void lerTemperatura() {
   Rntc = (Raux * Vadc / (3.3 - Vadc));
   tempK = (beta / log(Rntc / Rinf));
   temp = tempK - 273.15;
+}
+
+void calcs(){
+  float rad = angle*(npi/180);
+  vp = 220*sqrt(2);
+  pt1 = (rad/(2*npi));
+  pt2 = sin(2*rad)/(4*npi);
+
+  vefc = vp*sqrt(0.5-pt1+pt2);
+  pl = (pow(vefc,2))/res;
 }
